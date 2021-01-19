@@ -1,0 +1,60 @@
+
+<div class="container py-5 d-flex justify-content-center">
+  <div class="card" style="width:25rem;">
+    <h5 class="card-header">Ladda upp data</h5>
+      <div class="card-body">
+          <form action="/" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label>Balansdatum</label>
+              {{ form.csrf_token() }}
+              {{ form.balance_date(class_="form-control") }}
+              <small id="DateFormatHelp" class="form-text text-muted">Format skall vara YYYY-MM-DD</small>
+            </div>
+            <div class="form-group">
+              {{ form.file(class_="form-control") }}
+            </div>
+            <div class="form-group d-flex flex-row-reverse">
+              {{ form.submit(class="btn btn-primary right") }}
+            </div>
+          </form>
+      </div>
+  </div>
+</div>
+<div class="container d-flex justify-content-center">
+  <div class="row">
+      {% if data["upload_result"] == "Success" %}
+      <div class="card mx-auto alert alert-success" style="width:25rem;" role="alert">
+          {{ data["upload_result_msg"] }}
+      </div>
+      {% elif data["upload_result"] == "Error" %}
+      <div class="card mx-auto alert alert-danger" style="width:25rem;" role="alert">
+          {{ data["upload_result_msg"] }}
+      </div>
+      {% endif %}
+  </div>
+</div>
+<div class="container d-flex justify-content-center">
+  <div class="row">
+      {% if data["report_result"] == "Success" %}
+      <div class="card mx-auto alert alert-success" style="width:25rem;" role="alert">
+          {{ data["report_result_msg"] }}
+      </div>
+      {% elif ((data["report_result"] == "Error") or (data["upload_result"] == "Error")) %}
+      <div class="card mx-auto alert alert-danger" style="width:25rem;" role="alert">
+          Aj då! Något gick sönder när rapporten skulle skapas!
+      </div>
+      {% endif %}
+  </div>
+</div>
+<div class="container d-flex justify-content-center">
+  <div class="row">
+  {% if data["report_result"] == "Success" %}
+    <a class="btn btn-primary btn-block" style="width:25rem;" href="/download/{{ data.report_filename }}" role="button">Ladda ner</a>
+  {% else %}
+    {% if data["upload_result"] == "Success" %}
+    <a class="btn btn-primary btn-block" style="width:25rem;" href="/compare?new_file={{ data.uploaded_file_name }}" role="button">Nästa</a>
+    {% endif %}
+
+  {% endif %}
+  </div>
+</div>

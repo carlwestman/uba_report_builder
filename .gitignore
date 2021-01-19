@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# certificates
+*.pfx
+/data/ftg_reg_2021-01-16/
+/data/data.db
+/data/ftg_reg_2021-01-16.zip
+/dev_config.py
